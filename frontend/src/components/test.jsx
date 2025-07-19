@@ -5,7 +5,7 @@ function Test() {
   const [tests, setTests] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
-  const [userAnswers, setUserAnswers] = useState([]);
+  const [userAnswers, setUserAnswers] = useState({});
   const [selectedTestId, setSelectedTestId] = useState(null);
   const [filteredQuestions, setFilteredQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -56,16 +56,19 @@ function Test() {
   const prevQuestion = () =>
     setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0));
 
-  const answerId = (e) => {
-    setUserAnswers(e.target.id);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     let con = confirm("Are you sure u want to submit?");
     if (con) {
       alert("Click on end exam.");
     }
+  };
+
+  const answerId = (questionId, selectAnswer) => {
+    setUserAnswers((prev) => ({
+      ...prev,
+      [questionId]: selectAnswer,
+    }));
   };
 
   if (loading)
@@ -134,12 +137,12 @@ function Test() {
               <li key={ans.id} className="flex items-center space-x-2">
                 <input
                   type="radio"
-                  onClick={(e) => {
-                    answerId(e.target.ans.id);
-                  }}
                   id={`answer-${ans.id}`}
+                  value={ans.id}
                   name={`question-${currentQuestion?.id}`}
                   className="accent-blue-600"
+                  checked={userAnswers[currentQuestion.id] === ans.id}
+                  onChange={() => answerId(currentQuestion.id, ans.id)}
                 />
                 {console.log(userAnswers)}
                 <label htmlFor={`answer-${ans.id}`} className="text-gray-700">
