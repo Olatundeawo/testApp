@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { ClipLoader } from "react-spinners";
 
 function Test() {
   const [tests, setTests] = useState([]);
@@ -69,8 +70,8 @@ function Test() {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-48 text-gray-500">
-        Loading...
+      <div className="flex justify-center items-center h-48 text-gray-500 py-8">
+        <ClipLoader loading={true} size={70} />
       </div>
     );
 

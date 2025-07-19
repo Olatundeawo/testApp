@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 function QuestionPost() {
   const [tests, setTests] = useState([]);
-  const [te, setTe] = useState(null);
   const [selectedTestId, setSelectedTestId] = useState("");
   const [question, setQuestion] = useState({ text: "" });
 
