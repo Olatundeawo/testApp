@@ -55,10 +55,6 @@ function Test() {
   const prevQuestion = () =>
     setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0));
 
-  const answerId = (e) => {
-    setUserAnswers(e.target.id);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     let con = confirm("Are you sure u want to submit?");
@@ -86,6 +82,9 @@ function Test() {
     ? getAnswersForQuestion(currentQuestion.id)
     : [];
 
+  const answerId = (e) => {
+    setUserAnswers({ ...currentAnswers, [e.target.name]: e.target.value });
+  };
   return (
     <div className="max-w-xl mx-auto p-4 mt-8 bg-white shadow-lg rounded-2xl">
       <h2 className="text-2xl font-semibold mb-4 text-gray-800">
