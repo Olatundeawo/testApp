@@ -5,8 +5,13 @@ function Test() {
   const [tests, setTests] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
-  const [userAnswers, setUserAnswers] = useState({});
+  const [userAnswers, setUserAnswers] = useState(() => {
+    const save = sessionStorage.getItem("userAnswers");
+    return save ? JSON.parse(save) : {};
+  });
   const [selectedTestId, setSelectedTestId] = useState(null);
+  const [isCorrect, setIsCorrect] = useState(null);
+  const [results, setResults] = useState([]);
   const [filteredQuestions, setFilteredQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -37,6 +42,10 @@ function Test() {
       });
   }, []);
 
+  useEffect(() => {
+    sessionStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+  }, [userAnswers]);
+
   const handleTestSelection = (testId) => {
     const id = Number(testId);
     setSelectedTestId(id);
@@ -48,10 +57,37 @@ function Test() {
   const getAnswersForQuestion = (questionId) =>
     answers.filter((ans) => ans.question === questionId);
 
-  const nextQuestion = () =>
+  const checkAnswer = (userAnswer, answers) => {
+    let correctCount = 0;
+    const answerMap = new Map();
+
+    answers.forEach((ans) => {
+      answerMap.set(ans.id, ans);
+    });
+    const result = Object.entries(userAnswer).map(([questionId, answerId]) => {
+      const actualAnswer = answerMap.get(answerId);
+      const isCorrect = actualAnswer?.is_correct || false;
+
+      if (isCorrect) correctCount++;
+
+      return {
+        questionId,
+        answerId,
+        isCorrect,
+      };
+    });
+
+    return {
+      correctCount,
+      result,
+    };
+  };
+  console.log(isCorrect);
+  const nextQuestion = () => {
     setCurrentQuestionIndex((prev) =>
       Math.min(prev + 1, filteredQuestions.length - 1)
     );
+  };
 
   const prevQuestion = () =>
     setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0));
@@ -61,6 +97,9 @@ function Test() {
     let con = confirm("Are you sure u want to submit?");
     if (con) {
       alert("Click on end exam.");
+      let result = checkAnswer(userAnswers, answers);
+      setIsCorrect(result.correctCount);
+      setResults(result.result);
     }
   };
 
@@ -144,7 +183,7 @@ function Test() {
                   checked={userAnswers[currentQuestion.id] === ans.id}
                   onChange={() => answerId(currentQuestion.id, ans.id)}
                 />
-                {console.log(userAnswers)}
+
                 <label htmlFor={`answer-${ans.id}`} className="text-gray-700">
                   {ans.text}
                 </label>
