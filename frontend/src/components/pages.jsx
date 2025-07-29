@@ -7,6 +7,7 @@ import TestPost from "./testPost";
 import QuestionPost from "./questionPost";
 import AnswerPost from "./answerPost";
 import TestChange from "./testChange";
+import QuestionChange from "./questionChange";
 import Notfound from "./Notfound";
 
 function Page() {
@@ -21,6 +22,7 @@ function Page() {
           <Route path="/addquestion" element={<QuestionPost />} />
           <Route path="/addanswer" element={<AnswerPost />} />
           <Route path="/testchange" element={<TestChange />} />
+          <Route path="/questionchange" element={<QuestionChange />} />
           <Route path="*" element={<Notfound />} />
         </Routes>
       </div>
