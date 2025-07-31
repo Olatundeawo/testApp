@@ -8,6 +8,8 @@ import QuestionPost from "./questionPost";
 import AnswerPost from "./answerPost";
 import TestChange from "./testChange";
 import QuestionChange from "./questionChange";
+import AnswerChange from "./answerChange";
+import AnswerList from "./answerList";
 import Notfound from "./Notfound";
 
 function Page() {
@@ -23,6 +25,8 @@ function Page() {
           <Route path="/addanswer" element={<AnswerPost />} />
           <Route path="/testchange" element={<TestChange />} />
           <Route path="/questionchange" element={<QuestionChange />} />
+          <Route path="/answerchange" element={<AnswerChange />} />
+          <Route path="/answer/:id" element={<AnswerList />} />
           <Route path="*" element={<Notfound />} />
         </Routes>
       </div>
