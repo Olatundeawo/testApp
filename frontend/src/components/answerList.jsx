@@ -49,7 +49,28 @@ export default function AnswerList() {
       console.error(`Failed to fetch ${err}`);
     }
   };
-  console.log(answers);
+
+  async function handleDelete(e) {
+    e.preventDefault();
+    if (confirm(`Are sure you want to delete Answer:${answers.text} ?`)) {
+      try {
+        const response = await fetch(
+          `http://localhost:8000/catalog/api/answers/${id}/`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-type": "application/json",
+            },
+          }
+        );
+        if (!response.ok)
+          throw new Error(`Failed to fetch: ${response.status}`);
+        setAnswers((prev) => prev.filter((data) => data.id === !answers.id));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
 
   return (
     <div>
@@ -72,7 +93,9 @@ export default function AnswerList() {
           />
           <button type="submit">Update</button>
           <br />
-          <button type="button">Delete</button>
+          <button type="button" onClick={handleDelete}>
+            Delete
+          </button>
         </form>
       )}
     </div>
