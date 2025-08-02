@@ -5,7 +5,6 @@ export default function AnswerChange() {
   const [answers, setAnswers] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [selectQuestion, setSelectQuestion] = useState(null);
-  const [selectAnswer, setSelectAnswer] = useState(null);
 
   useEffect(() => {
     Promise.all([
@@ -29,11 +28,6 @@ export default function AnswerChange() {
 
     setSelectQuestion(answers.filter((prev) => prev.question === question.id));
   }
-
-  //   function handleSelectAnswer(answer) {
-  //     setSelectAnswer(answer);
-  //   }
-  console.log(selectAnswer);
 
   return (
     <div>
